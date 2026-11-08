@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Graph Lab</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap">
+<link rel="stylesheet" href="css/tema.css">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/log.css">
+</head><body>
+<div class="bar">
+ <b>Graph Lab</b>
+ <label><input type="checkbox" id="dir"> Dirigido</label>
+ <label><input type="checkbox" id="wt"> Ponderado</label><label title="w = ⌊distancia / escala⌋, se recalcula al arrastrar"><input type="checkbox" id="auto"> Peso = distancia</label><label>Escala <input type="number" id="esc" value="10" min="1"></label>
+ <button id="smp">Ejemplo</button><label>Tema <select id="theme"></select></label><button id="clr">Limpiar</button>
+ <span style="flex:1"></span>
+ <label>Estructura <select id="st"><option value="graph">Grafo</option><option value="list">Lista enlazada</option><option value="tree">Árbol BST</option></select></label><select id="alg"></select>
+ <label>Inicio <select id="s"></select></label><label>Destino <select id="t"></select></label>
+</div>
+<div class="bar">
+ <button id="bk" title="Paso atrás">⏮</button><button id="sb" title="Paso atrás">◀</button>
+ <button id="pl" class="on" title="Reproducir/Pausar">▶ Reproducir</button>
+ <button id="sf" title="Paso adelante">▶|</button>
+ <label>Velocidad <input type="range" id="sp" min="1" max="10" value="5"></label>
+ <span id="ops" style="display:flex;gap:6px;align-items:center"></span><span id="ct" style="color:var(--mu)"></span>
+</div>
+<main>
+ <section id="cv"><div id="tools"><button data-m="v">↖ Mover (V)</button><button data-m="n">➕ Nodo (N)</button><button data-m="e">🔗 Arista (E)</button><button data-m="d">🗑️ Eliminar (D)</button></div><svg id="svg"></svg><input id="ed"></section>
+ <aside>
+  <div class="tabs"><button data-p="pLog" class="on">Log</button><button data-p="pRep">Grafo</button><button data-p="pCode">Código</button><button data-p="pSkin">Tema</button></div>
+  <div class="pane on" id="pLog"><div id="log"></div><div id="ds"></div></div>
+  <div class="pane" id="pRep"><button id="rt" style="align-self:flex-start;margin-bottom:8px">Ver: Lista</button><div id="rep"></div></div>
+  <div class="pane" id="pCode"><div class="cw"><pre id="hl"></pre><textarea id="code" spellcheck="false"></textarea></div>
+   <div class="hint">API: visualizer.visitNode(id, estado) · highlightEdge(u,v,estado) · log(msg) · setStructure(nombre,valor) · showPath([ids]). Estados: unvisited, queued, current, visited, path (o color CSS). Datos: graph.nodes, graph.edges, graph.neighbors(id), graph.h(a,b), params.start/end.</div></div>
+ <div class="pane" id="pSkin"><textarea id="skj" spellcheck="false"></textarea><button id="ska" style="margin-top:8px;align-self:flex-start">Aplicar tema</button><div class="hint" id="skm">JSON: name, font, fontSize, radius, shadow, shape (circle|square|hex|pixel), line (solid|dashed|dotted|dither), width, pathWidth, crisp, scan, palette{bg,panel,text,muted,border,edge,accent}, states{unvisited,queued,current,visited,path}. También: registerSkin(id, cfg) en consola.</div></div></aside>
+</main>
+<div class="hint" id="hint"></div>
+<script src="js/core/utils.js"></script>
+<script src="js/grafos/graph-engine.js"></script>
+<script src="js/log/recorder.js"></script>
+<script src="js/grafos/algoritmos.js"></script>
+<script src="js/tema/skins.js"></script>
+<script src="js/tema/formas.js"></script>
+<script src="js/listas/algoritmos-listas.js"></script>
+<script src="js/arboles/algoritmos-arboles.js"></script>
+<script src="js/core/estructuras.js"></script>
+<script src="js/listas/listas.js"></script>
+<script src="js/arboles/arboles.js"></script>
+<script src="js/core/estado.js"></script>
+<script src="js/grafos/geometria.js"></script>
+<script src="js/log/log.js"></script>
+<script src="js/grafos/render.js"></script>
+<script src="js/grafos/representaciones.js"></script>
+<script src="js/grafos/edicion.js"></script>
+<script src="js/core/reproductor.js"></script>
+<script src="js/grafos/opciones.js"></script>
+<script src="js/core/editor-codigo.js"></script>
+<script src="js/core/ui.js"></script>
+<script src="js/tema/tema-ui.js"></script>
+<script src="js/core/main.js"></script>
+</body></html>
