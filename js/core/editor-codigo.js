@@ -4,4 +4,4 @@ function hl(){ // resaltado de sintaxis ligero (overlay)
 $('#code').oninput=()=>{hl();$('#alg').value='Personalizado';frames=null;stop()};
 $('#code').onscroll=e=>{$('#hl').scrollTop=e.target.scrollTop;$('#hl').scrollLeft=e.target.scrollLeft};
 $('#code').onkeydown=e=>{if(e.key==='Tab'){e.preventDefault();const t=e.target,s=t.selectionStart;t.setRangeText('  ',s,t.selectionEnd,'end');t.oninput()}};
-$('#code').value=ALGS.BFS;hl();Recorder.logsRef=[];
+$('#code').value=ALGS.BFS;hl();logsRef=[];

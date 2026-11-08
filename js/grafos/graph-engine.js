@@ -16,6 +16,7 @@ class GraphEngine{
  // Recalcula pesos (solo aristas incidentes a `id`, o todas). api() lee e.w al ejecutar, así los algoritmos usan siempre el valor vigente.
  recalc(id){if(!this.autoW)return false;for(const e of this.edges)if(id===undefined||e.u===id||e.v===id)e.w=this.wDist(e);return true}
  // Vista de solo lectura que reciben los algoritmos
+ snapshot(){return{directed:this.directed,weighted:this.weighted,nodes:this.nodes.map(n=>({id:n.id,x:n.x,y:n.y})),edges:this.edges.map(e=>({u:e.u,v:e.v,w:e.w}))}}
  api(){
   const g=this,E=g.edges.map(e=>({from:e.u,to:e.v,weight:g.w(e)}));
   const ratios=g.edges.map(e=>g.w(e)/(Math.hypot(g.nd(e.u).x-g.nd(e.v).x,g.nd(e.u).y-g.nd(e.v).y)||1));

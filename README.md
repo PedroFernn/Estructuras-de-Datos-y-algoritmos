@@ -16,6 +16,9 @@ Se usa Google Fonts para las tipografías de los temas, así que se necesita con
 
 ## Modos de edición
 
+Los atajos de letra (`V`, `N`, `E`, `D`) funcionan cuando el foco está en el lienzo o fuera de campos de texto. Dentro del editor de código, de los campos de texto y de los selectores, usa `Alt+1`, `Alt+2`, `Alt+3` y `Alt+4` para cambiar de modo, así no se interfiere con lo que escribes.
+
+
 | Modo | Atajo | Acción |
 |---|---|---|
 | Mover | `V` | Arrastra nodos. Clic selecciona. `Supr` elimina. Doble clic renombra o edita peso. |
@@ -104,7 +107,17 @@ graph-lab/
 
 Los archivos se cargan como scripts clásicos, en el orden definido en `index.html`. No usan módulos ES, así que funcionan abriendo el archivo directamente desde el disco.
 
+## Seguridad y ejecución
+
+Cada algoritmo se ejecuta en un **Web Worker** separado de la página:
+
+- No tiene acceso al DOM, a `window`, a `localStorage` ni a `sessionStorage`.
+- Se anulan en el global `fetch`, `XMLHttpRequest`, `WebSocket`, `importScripts`, `indexedDB`, `caches`, `postMessage` y otros. Los globales anulados son no escribibles y no configurables, así que no se pueden recuperar con `Function('return this')()`.
+- Si el código entra en un bucle síncrono sin `await`, el hilo principal termina el Worker a los 4 segundos y muestra un aviso en el log. La página nunca se congela.
+- Hay un límite de 5000 pasos grabados.
+
+Esto reduce mucho la superficie de ataque, pero no es una garantía de seguridad de nivel de producción. Como buena práctica, no ejecutes código que no conozcas.
+
 ## Notas
 
-- El aislamiento del código de usuario no es un sandbox real. Se sombrean globales peligrosos (`fetch`, `localStorage`, `window`, etc.) y se limita el número de pasos, pero no uses la app con código que no sea de confianza.
-- Los atajos de teclado no se activan mientras escribes en el editor de código o en campos de texto.
+- Los atajos `V`, `N`, `E`, `D` no se activan dentro de campos de texto; usa `Alt+1..4` allí.

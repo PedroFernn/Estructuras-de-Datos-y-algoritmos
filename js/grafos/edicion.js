@@ -39,7 +39,9 @@ svg.oncontextmenu=ev=>{ev.preventDefault();const p=pt(ev),n=nodeAt(p.x,p.y);
 svg.ondblclick=ev=>{const p=pt(ev),n=nodeAt(p.x,p.y);
  if(n)edit(n.x,n.y,n.id,v=>{if(v&&v!==n.id&&G.rename(n.id,v)){sel={n:v};changed()}});
  else{const e=edgeAt(p.x,p.y);if(e&&G.weighted)editW(e)}};
-document.onkeydown=ev=>{const a=document.activeElement;if(a.tagName==='TEXTAREA'||(a.tagName==='INPUT'&&a.type==='text'))return;
+const MODE_ALT={Digit1:'v',Digit2:'n',Digit3:'e',Digit4:'d'};
+document.onkeydown=ev=>{const a=document.activeElement,campo=['TEXTAREA','INPUT','SELECT'].includes(a.tagName);
+ if(campo){if(ev.altKey&&!ev.ctrlKey&&!ev.metaKey&&MODE_ALT[ev.code]){ev.preventDefault();setMode(MODE_ALT[ev.code])}return}
  const k=ev.key.toLowerCase();if(!ev.ctrlKey&&!ev.metaKey&&k.length===1&&'vned'.includes(k)){setMode(k);return}
  if(sel&&(ev.key==='Delete'||ev.key==='Backspace')){sel.n?G.delNode(sel.n):G.delEdge(sel.e);sel=null;changed()}};
 document.addEventListener('change',e=>{if(e.target.tagName==='SELECT')e.target.blur()});
