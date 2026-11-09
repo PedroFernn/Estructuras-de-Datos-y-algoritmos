@@ -26,3 +26,11 @@ button,select{box-shadow:var(--sh,none)}button:active{transform:translate(1px,1p
 #tools{position:absolute;top:8px;left:8px;display:flex;gap:3px;z-index:2;background:var(--pn);border:1px solid var(--bd);border-radius:var(--r,8px);padding:3px;box-shadow:var(--sh,none)}
 #tools button{border:0;box-shadow:none}
 #esc{width:58px;background:var(--bg);color:var(--fg);border:1px solid var(--bd);padding:5px}
+
+[hidden]{display:none!important}
+
+#confModal{position:fixed;inset:0;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;z-index:50}
+#confModal[hidden]{display:none!important}
+.confBox{background:var(--pn);color:var(--fg);border:1px solid var(--bd);border-radius:10px;padding:18px;max-width:380px;width:90%}
+.confBox p{margin:0 0 4px;line-height:1.4}
+.confBtns{display:flex;gap:8px;justify-content:flex-end;margin-top:14px}

@@ -2,7 +2,7 @@
 let busy=false;
 async function run(){busy=true;try{await run0()}finally{busy=false}}
 async function run0(){
- const res=await runSandbox({code:$('#code').value,graph:G.snapshot(),params:{start:$('#s').value,end:$('#t').value}});
+ const res=await runSandbox({code:$('#code').value,graph:G.snapshot(),params:{start:$('#s').value,end:$('#t').value,val:(($('#val')||{}).value||'').trim(),max:ST==='heapmax',model:VM[ST]||null}});
  logsRef=res.logs||[];
  frames=res.frames||[{n:{},e:{},ds:{},l:logsRef.length}];
  idx=0;render()}

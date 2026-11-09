@@ -23,7 +23,7 @@ svg.onpointerdown=ev=>{
  else if(mode==='e'){
   if(n&&pend&&pend!==n.id){link(pend,n.id);pend=null}
   else if(n){drag={n,mode:'edge',x:p.x,y:p.y};svg.setPointerCapture(ev.pointerId)}else pend=null;
- }else if(n){G.delNode(n.id);sel=null;changed()}else if(e){G.delEdge(e);sel=null;changed()}
+ }else if(n){const id=n.id;pedirConfirmacion(txtNodo(id),()=>{G.delNode(id);sel=null;changed()})}else if(e){pedirConfirmacion(txtArista(e),()=>{G.delEdge(e);sel=null;changed()})}
  render()};
 svg.onpointermove=ev=>{if(!drag)return;const p=pt(ev);
  if(Math.hypot(p.x-drag.x,p.y-drag.y)>5)drag.moved=true;
@@ -40,8 +40,10 @@ svg.ondblclick=ev=>{const p=pt(ev),n=nodeAt(p.x,p.y);
  if(n)edit(n.x,n.y,n.id,v=>{if(v&&v!==n.id&&G.rename(n.id,v)){sel={n:v};changed()}});
  else{const e=edgeAt(p.x,p.y);if(e&&G.weighted)editW(e)}};
 const MODE_ALT={Digit1:'v',Digit2:'n',Digit3:'e',Digit4:'d'};
-document.onkeydown=ev=>{const a=document.activeElement,campo=['TEXTAREA','INPUT','SELECT'].includes(a.tagName);
+document.onkeydown=ev=>{
+ if(!$('#confModal').hidden){if(ev.key==='Escape')cerrarConfirmacion(false);else if(ev.key==='Enter')cerrarConfirmacion(true);ev.preventDefault();return}
+ const a=document.activeElement,campo=['TEXTAREA','INPUT','SELECT'].includes(a.tagName);
  if(campo){if(ev.altKey&&!ev.ctrlKey&&!ev.metaKey&&MODE_ALT[ev.code]){ev.preventDefault();setMode(MODE_ALT[ev.code])}return}
  const k=ev.key.toLowerCase();if(!ev.ctrlKey&&!ev.metaKey&&k.length===1&&'vned'.includes(k)){setMode(k);return}
- if(sel&&(ev.key==='Delete'||ev.key==='Backspace')){sel.n?G.delNode(sel.n):G.delEdge(sel.e);sel=null;changed()}};
+ if(sel&&(ev.key==='Delete'||ev.key==='Backspace')){const s=sel;if(s.n){const id=s.n;pedirConfirmacion(txtNodo(id),()=>{G.delNode(id);sel=null;changed()})}else{const ed=s.e;pedirConfirmacion(txtArista(ed),()=>{G.delEdge(ed);sel=null;changed()})}}};
 document.addEventListener('change',e=>{if(e.target.tagName==='SELECT')e.target.blur()});

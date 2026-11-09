@@ -10,8 +10,8 @@ function render(){
  }
  if(drag&&drag.mode==='edge'&&drag.cur){const a=drag.n;h+=`<line x1="${a.x}" y1="${a.y}" x2="${drag.cur.x}" y2="${drag.cur.y}" stroke="var(--ac)" stroke-dasharray="4 4"/>`}
  for(const n of G.nodes){
-  const st=f.n[n.id]||'unvisited',s=sel&&sel.n===n.id,p=pend===n.id;
-  h+=shapeSvg(n,col(st),s?'var(--fg)':p?'#f59e0b':'var(--ed)',s||p?3:2,p)+`<text x="${n.x}" y="${n.y+4}" text-anchor="middle" fill="${st==='unvisited'?'var(--fg)':'#04121f'}" font-weight="600" pointer-events="none">${n.id}</text>`;
+  const st=f.n[n.id]||n.color||'unvisited',s=sel&&sel.n===n.id,p=pend===n.id;
+  h+=shapeSvg(n,col(st),s?'var(--fg)':p?'#f59e0b':'var(--ed)',s||p?3:2,p)+`<text x="${n.x}" y="${n.y+4}" text-anchor="middle" fill="${st==='unvisited'?'var(--fg)':(st==='rb-B'?'#ffffff':'#04121f')}" font-weight="600" pointer-events="none">${n.label??n.id}</text>`;
  }
  svg.innerHTML=h;
  renderLog(f);

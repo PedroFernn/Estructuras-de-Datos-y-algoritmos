@@ -3,7 +3,7 @@ Object.assign(ALGS,{
 async function go(u){
   if(u===undefined) return;
   await visualizer.visitNode(u,'current'); out.push(u);
-  await visualizer.setStructure('Salida',out); await visualizer.log('Visitar '+u+' (raíz, izq, der)');
+  await visualizer.setStructure('Salida',out); await visualizer.log('Visitar '+graph.val(u)+' (raíz, izq, der)');
   await visualizer.visitNode(u,'visited');
   await go(graph.left(u)); await go(graph.right(u));
 }
@@ -14,7 +14,7 @@ async function go(u){
   await visualizer.visitNode(u,'queued');
   await go(graph.left(u));
   await visualizer.visitNode(u,'current'); out.push(u);
-  await visualizer.setStructure('Salida',out); await visualizer.log('Visitar '+u+' (izq, raíz, der)');
+  await visualizer.setStructure('Salida',out); await visualizer.log('Visitar '+graph.val(u)+' (izq, raíz, der)');
   await visualizer.visitNode(u,'visited');
   await go(graph.right(u));
 }
@@ -25,7 +25,7 @@ async function go(u){
   await visualizer.visitNode(u,'queued');
   await go(graph.left(u)); await go(graph.right(u));
   await visualizer.visitNode(u,'current'); out.push(u);
-  await visualizer.setStructure('Salida',out); await visualizer.log('Visitar '+u+' (izq, der, raíz)');
+  await visualizer.setStructure('Salida',out); await visualizer.log('Visitar '+graph.val(u)+' (izq, der, raíz)');
   await visualizer.visitNode(u,'visited');
 }
 await go(params.start);`,
@@ -33,7 +33,7 @@ await go(params.start);`,
 while(q.length){
   const u=q.shift();
   await visualizer.visitNode(u,'current'); out.push(u);
-  await visualizer.log('Visitar '+u);
+  await visualizer.log('Visitar '+graph.val(u));
   for(const c of [graph.left(u),graph.right(u)]) if(c!==undefined){
     q.push(c); await visualizer.highlightEdge(u,c,'queued'); await visualizer.visitNode(c,'queued');
   }
@@ -57,7 +57,7 @@ await visualizer.log('No encontrado');`,
   await visualizer.visitNode(u,'current');
   const a=await h(graph.left(u)), b=await h(graph.right(u)), r=1+Math.max(a,b);
   await visualizer.visitNode(u,'visited');
-  await visualizer.log('altura('+u+') = '+r);
+  await visualizer.log('altura('+graph.val(u)+') = '+r);
   return r;
 }
 await visualizer.log('Altura del árbol (en nodos): '+await h(params.start));`,
@@ -65,7 +65,7 @@ await visualizer.log('Altura del árbol (en nodos): '+await h(params.start));`,
   if(u===undefined) return true;
   await visualizer.visitNode(u,'current');
   const v=+u;
-  if(!(v>lo && v<hi)){ await visualizer.visitNode(u,'path'); await visualizer.log('✗ '+u+' viola el rango ('+lo+', '+hi+')'); return false; }
+  if(!(v>lo && v<hi)){ await visualizer.visitNode(u,'path'); await visualizer.log('✗ '+graph.val(u)+' viola el rango ('+lo+', '+hi+')'); return false; }
   const r=(await ok(graph.left(u),lo,v)) && (await ok(graph.right(u),v,hi));
   await visualizer.visitNode(u,'visited'); return r;
 }

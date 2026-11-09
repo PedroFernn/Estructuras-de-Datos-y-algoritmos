@@ -13,7 +13,7 @@
  <label><input type="checkbox" id="wt"> Ponderado</label><label title="w = ⌊distancia / escala⌋, se recalcula al arrastrar"><input type="checkbox" id="auto"> Peso = distancia</label><label>Escala <input type="number" id="esc" value="10" min="1"></label>
  <button id="smp">Ejemplo</button><label>Tema <select id="theme"></select></label><button id="clr">Limpiar</button>
  <span style="flex:1"></span>
- <label>Estructura <select id="st"><option value="graph">Grafo</option><option value="list">Lista enlazada</option><option value="tree">Árbol BST</option></select></label><select id="alg"></select>
+ <label>Tipo <select id="cat"></select></label><label id="lfam"><select id="fam"></select></label><label id="lvar" hidden><select id="var"></select></label><select id="alg"></select>
  <label>Inicio <select id="s"></select></label><label>Destino <select id="t"></select></label>
 </div>
 <div class="bar">
@@ -34,6 +34,7 @@
  <div class="pane" id="pSkin"><textarea id="skj" spellcheck="false"></textarea><button id="ska" style="margin-top:8px;align-self:flex-start">Aplicar tema</button><div class="hint" id="skm">JSON: name, font, fontSize, radius, shadow, shape (circle|square|hex|pixel), line (solid|dashed|dotted|dither), width, pathWidth, crisp, scan, palette{bg,panel,text,muted,border,edge,accent}, states{unvisited,queued,current,visited,path}. También: registerSkin(id, cfg) en consola.</div></div></aside>
 </main>
 <div class="hint" id="hint"></div>
+<div id="confModal" hidden><div class="confBox" role="dialog" aria-modal="true" aria-labelledby="confTxt"><p id="confTxt"></p><div class="confBtns"><button id="confCancel">Cancelar</button><button id="confOk" class="on">Eliminar</button></div></div></div>
 <script src="js/core/utils.js"></script>
 <script src="js/grafos/graph-engine.js"></script>
 <script src="js/log/recorder.js"></script>
@@ -45,6 +46,11 @@
 <script src="js/core/estructuras.js"></script>
 <script src="js/listas/listas.js"></script>
 <script src="js/arboles/arboles.js"></script>
+<script src="js/estructuras/lineales.js"></script>
+<script src="js/estructuras/algoritmos-lineales.js"></script>
+<script src="js/arboles/treelib.js"></script>
+<script src="js/arboles/vistas.js"></script>
+<script src="js/arboles/algoritmos-vistas.js"></script>
 <script src="js/core/estado.js"></script>
 <script src="js/grafos/geometria.js"></script>
 <script src="js/log/log.js"></script>
@@ -53,6 +59,8 @@
 <script src="js/grafos/edicion.js"></script>
 <script src="js/core/reproductor.js"></script>
 <script src="js/grafos/opciones.js"></script>
+<script src="js/core/selector.js"></script>
+<script src="js/core/confirmar.js"></script>
 <script src="js/core/editor-codigo.js"></script>
 <script src="js/core/ui.js"></script>
 <script src="js/tema/tema-ui.js"></script>

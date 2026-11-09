@@ -35,7 +35,13 @@ function buildApi(S) {
     children: id => S.edges.filter(e => e.u === id).map(e => e.v).sort((a, b) => nd(a).x - nd(b).x),
     left: id => S.edges.filter(e => e.u === id && nd(e.v).x < nd(id).x).map(e => e.v)[0],
     right: id => S.edges.filter(e => e.u === id && nd(e.v).x > nd(id).x).map(e => e.v)[0],
-    h: (a, b) => dist(a, b) * k
+    h: (a, b) => dist(a, b) * k,
+    val: id => { const n = nd(id); return n && n.label !== undefined ? n.label : id; },
+    at: i => S.nodes[i] ? S.nodes[i].id : undefined,
+    len: S.nodes.length,
+    succ: id => { const e = S.edges.find(e => e.u === id && e.kind !== 'prev'); return e ? e.v : undefined; },
+    head: () => { const inc = new Set(S.edges.filter(e => e.kind !== 'prev').map(e => e.v));
+      const h = S.nodes.find(n => !inc.has(n.id)) || S.nodes[0]; return h ? h.id : undefined; }
   });
 }
 
@@ -89,7 +95,7 @@ let logsRef = [];
 // Ejecuta el algoritmo en un Worker aislado. Devuelve { frames, logs }.
 function runSandbox(payload) {
   return new Promise(resolve => {
-    const url = URL.createObjectURL(new Blob([SANDBOX_SRC], { type: 'text/javascript' }));
+    const url = URL.createObjectURL(new Blob([SANDBOX_SRC, TREE_LIB], { type: 'text/javascript' }));
     const w = new Worker(url);
     const done = r => { clearTimeout(kill); w.terminate(); URL.revokeObjectURL(url); resolve(r); };
     const kill = setTimeout(() => done({ frames: null, logs: ['⏱ Tiempo agotado: ¿bucle sin await? Ejecución detenida'] }), SANDBOX_TIMEOUT);

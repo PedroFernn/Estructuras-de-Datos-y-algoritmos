@@ -10,11 +10,37 @@ Se usa Google Fonts para las tipografías de los temas, así que se necesita con
 
 ## Estructuras
 
-- **Grafo**: dirigido o no dirigido, ponderado o no. Con la opción *Peso = distancia* el peso de cada arista es `w = ⌊distancia / escala⌋` y se recalcula al arrastrar nodos.
-- **Lista enlazada**: lista dirigida en cadena. Inserción al final o al inicio, eliminación de un valor.
-- **Árbol BST**: árbol binario de búsqueda con inserción y eliminación. La eliminación reconstruye el árbol sin el valor.
+El selector va por niveles: primero eliges **Tipo** (Lineales o No lineales); después aparece la familia (por ejemplo Cola o Árbol) y, si tiene variantes, un tercer selector (por ejemplo Cola simple, Deque o Cola de prioridad). Las variantes marcadas *próximamente* aún no están implementadas.
+
+**Lineales**
+- **Arreglo**: agregar al final, quitar el último.
+- **Pila**: push, pop.
+- **Cola**: encolar, desencolar.
+- **Deque**: insertar y quitar por ambos extremos.
+- **Cola de prioridad**: insertar (ordenada por valor numérico) y extraer el mínimo.
+- **Lista doble**: cada nodo tiene `next` y `prev`. Insertar al inicio o al final, eliminar por valor.
+- **Lista circular**: como la lista simple, pero el último apunta al primero.
+- **Lista enlazada** (simple): operaciones originales.
+
+**No lineales**
+- **Grafo**: dirigido o no dirigido, ponderado o no. Con *Peso = distancia* el peso es `w = ⌊distancia / escala⌋`.
+- **Árbol BST**: insertar y eliminar.
+- **Árbol binario**: inserción por niveles (llena cada nivel de izquierda a derecha).
+- **AVL**: inserción y eliminación con factor de equilibrio y rotaciones LL, RR, LR y RL.
+- **Rojinegro**: inserción con recoloreo y rotaciones. La raíz siempre es negra.
+- **B** (máximo 3 claves por nodo): inserción con división de nodos. Cada nodo muestra sus claves separadas por `|`.
+- **B+** (máximo 3 claves): las claves están en las hojas; las hojas están enlazadas entre sí (línea de enlace).
+- **Trie**: inserción de palabras; cada nodo es una letra y los nodos marcados con color indican fin de palabra.
+- **Tabla hash** (7 buckets, h(k) = k mod 7):
+  - *Encadenamiento*: cada bucket es una lista de claves.
+  - *Sondeo lineal*: arreglo de 7 slots; si el slot está ocupado, se prueba el siguiente.
+- **Heap mín** y **Heap máx**: insertar y extraer la raíz. Se dibujan por niveles.
+
+Las estructuras lineales y los heaps guardan su secuencia de valores y reconstruyen el grafo en cada operación.
 
 ## Modos de edición
+
+Antes de borrar un nodo o una arista (con la herramienta Eliminar o con Supr/Backspace) aparece una confirmación. Usa **Eliminar** (o Enter) para continuar, o **Cancelar** (o Escape) para conservar el elemento.
 
 Los atajos de letra (`V`, `N`, `E`, `D`) funcionan cuando el foco está en el lienzo o fuera de campos de texto. Dentro del editor de código, de los campos de texto y de los selectores, usa `Alt+1`, `Alt+2`, `Alt+3` y `Alt+4` para cambiar de modo, así no se interfiere con lo que escribes.
 
@@ -29,26 +55,61 @@ Los atajos de letra (`V`, `N`, `E`, `D`) funcionan cuando el foco está en el li
 ## Algoritmos
 
 **Grafo**
-- BFS
-- DFS
-- Dijkstra (camino mínimo con pesos no negativos)
-- A* (heurística: distancia euclídea × mínima razón peso/longitud, admisible)
-- Prim (MST, trata el grafo como no dirigido)
-- Kruskal (MST con Union-Find, trata el grafo como no dirigido)
+- BFS, DFS, Dijkstra, A*, Prim, Kruskal
+- Bellman-Ford (detecta ciclos negativos alcanzables)
+- Floyd-Warshall (muestra la matriz tras cada intermedio `k`)
+- Topológico (Kahn; requiere grafo dirigido)
 
-**Lista**
-- Recorrer
-- Buscar
-- Nodo medio (tortuga y liebre)
-- Detectar ciclo (Floyd)
+**Árbol (BST y binario)**
+- Preorden, inorden, postorden, por niveles, altura (BST también: buscar, validar BST)
 
-**Árbol**
-- Preorden, inorden, postorden, por niveles
-- BST: buscar
-- Altura
-- Validar BST
+**Árbol AVL y Rojinegro**
+- AVL: insertar con rotaciones (animado), buscar
+- Rojinegro: insertar con recoloreo y rotaciones (animado), buscar
+
+**B y B+**
+- B: buscar (recorre los nodos y baja al hijo correspondiente)
+- B+: buscar, recorrer hojas (sigue los enlaces entre hojas)
+
+**Trie**
+- Buscar prefijo (indica si el prefijo existe y si es palabra completa)
+
+**Tabla hash**
+- Función hash: muestra h(k) para cada clave
+- Encadenamiento: buscar en la cadena del bucket
+- Sondeo lineal: insertar y buscar probando slots
+
+**Lista (simple, doble, circular)**
+- Recorrer, buscar, nodo medio, detectar ciclo (Floyd), invertir punteros
+
+**Arreglo**
+- Búsqueda binaria (el arreglo debe estar ordenado)
+- Two pointers (par con suma objetivo; requiere arreglo ordenado)
+- Sliding window (suma máxima de ventana de tamaño `k`)
+
+**Pila**
+- Siguiente mayor (stack monotónica)
+- Infija a postfija (shunting-yard): escribe la expresión en el campo *valor*, por ejemplo `3+4*2`
+- Evaluar postfija: escribe la expresión con espacios, por ejemplo `3 4 + 2 *`
+
+**Cola / Deque / Cola de prioridad**
+- Ventana máxima con deque (usa el campo *valor* como tamaño de ventana)
+
+**Heap (mín y máx)**
+- Heapify, sift-up (último), sift-down (raíz)
 
 Todos los algoritmos están en `js/` y se pueden editar desde la pestaña **Código**. Si modificas uno, el selector cambia a *Personalizado*.
+
+Para los algoritmos que necesitan un valor (`k`, objetivo, expresión), escríbelo en el campo *valor* antes de reproducir.
+
+### Limitaciones actuales
+
+- En heaps, los intercambios se ven en el panel de datos, pero no mueven los nodos del lienzo.
+- *Invertir punteros* y las rotaciones animadas muestran el proceso y el resultado, pero no modifican la estructura. La operación *Insertar* o *Eliminar* sí la modifica.
+- El Rojinegro solo tiene inserción (no eliminación).
+- El tamaño de la tabla hash es fijo (7). Las claves deben ser números.
+- El B y el B+ tienen máximo 3 claves por nodo (orden 4).
+- La eliminación en B, B+ y Trie no está implementada.
 
 ## API para algoritmos personalizados
 
@@ -97,10 +158,11 @@ graph-lab/
 │  ├─ tema.css       variables de color, líneas de escaneo
 │  └─ log.css        estilos del log
 └─ js/
-   ├─ core/          utilidades, estado, estructuras, reproductor, editor, UI, main
+   ├─ core/          utilidades, estado, estructuras, selector, reproductor, editor, UI, main
    ├─ grafos/        motor del grafo, algoritmos, geometría, render, edición, opciones
    ├─ listas/        operaciones de lista y sus algoritmos
    ├─ arboles/       operaciones BST y sus algoritmos
+   ├─ estructuras/   arreglo, pila, cola, deque, cola de prioridad, listas doble/circular, heaps y sus algoritmos
    ├─ log/           grabador de pasos (Recorder) y panel de log
    └─ tema/          skins, formas, interfaz de temas
 ```
